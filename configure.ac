@@ -417,26 +417,26 @@ AM_CONDITIONAL([HAVE_TDB], [test "x$HAVE_TDB" = x1])
 
 
 ### VizAudio support (Optional) ###
-AC_ARG_ENABLE([libvizaudio],
-    AS_HELP_STRING([--disable-libvizaudio], [Disable optional VizAudio support]),
+AC_ARG_ENABLE([vizaudio],
+    AS_HELP_STRING([--disable-vizaudio], [Disable optional VizAudio support]),
         [
             case "${enableval}" in
-                yes) libvizaudio=yes ;;
-                no) libvizaudio=no ;;
+                yes) vizaudio=yes ;;
+                no) vizaudio=no ;;
                 *) AC_MSG_ERROR(bad value ${enableval} for --disable-libvizaudio) ;;
             esac
         ],
-        [libvizaudio=auto])
+        [vizaudio=auto])
 
 if test "x${libvizaudio}" != xno ; then
-    PKG_CHECK_MODULES(libvizaudio, [ libvizaudio >= 1.0 ],
+    PKG_CHECK_MODULES(VIZAUDIO, [ libvizaudio >= 1.0 ],
         [
             HAVE_VIZAUDIO=1
             AC_DEFINE([HAVE_VIZAUDIO], 1, [Have vizaudio?])
         ],
         [
             HAVE_VIZAUDIO=0
-            if test "x$libvizaudio" = xyes ; then
+            if test "x$vizaudio" = xyes ; then
                 AC_MSG_ERROR([*** vizaudio not found ***])
             fi
         ])
@@ -501,6 +501,7 @@ BUILTIN_ALSA=0
 BUILTIN_OSS=0
 BUILTIN_GSTREAMER=0
 BUILTIN_NULL=0
+BUILTIN_VIZAUDIO=0
 
 case "x$with_builtin" in
      xpulse)
@@ -513,10 +514,11 @@ case "x$with_builtin" in
 	HAVE_OSS=0
 	HAVE_GSTREAMER=0
         HAVE_NULL=0
+    HAVE_VIZAUDIO=0
      ;;
 
 	xvizaudio)
-		if test "xHAVE_VIZAUDIO" != x1; then
+		if test "x$HAVE_VIZAUDIO" != x1; then
 				AC_MSG_ERROR([*** VizAudio selected for builtin driver, but not enabled. ***])
 		fi
 		

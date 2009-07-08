@@ -46,7 +46,7 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 	
 	char* effect;
 	// Get the visual effect
-    effect = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_EVENT_VISUAL_EFFECT);
+    effect = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_VISUAL_EFFECT);
 	
 	if(!strcmp(effect, "SONG_INFO_POPUP")){
 		// Grab additional info and goto finish if any are found
@@ -124,17 +124,6 @@ int driver_change_props(ca_context *c, ca_proplist *changed, ca_proplist *merged
     ca_return_val_if_fail(c, CA_ERROR_INVALID);
     ca_return_val_if_fail(changed, CA_ERROR_INVALID);
     ca_return_val_if_fail(merged, CA_ERROR_INVALID);
-
-    return CA_SUCCESS;
-}
-
-int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_callback_t cb, void *userdata) {
-    ca_return_val_if_fail(c, CA_ERROR_INVALID);
-    ca_return_val_if_fail(proplist, CA_ERROR_INVALID);
-    ca_return_val_if_fail(!userdata || cb, CA_ERROR_INVALID);
-
-    if (cb)
-        cb(c, id, CA_SUCCESS, userdata);
 
     return CA_SUCCESS;
 }

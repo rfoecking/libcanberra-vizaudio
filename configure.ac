@@ -501,6 +501,7 @@ BUILTIN_ALSA=0
 BUILTIN_OSS=0
 BUILTIN_GSTREAMER=0
 BUILTIN_NULL=0
+BUILTIN_VIZAUDIO=0
 
 case "x$with_builtin" in
      xpulse)
@@ -513,10 +514,11 @@ case "x$with_builtin" in
 	HAVE_OSS=0
 	HAVE_GSTREAMER=0
         HAVE_NULL=0
+    HAVE_VIZAUDIO=0
      ;;
 
 	xvizaudio)
-		if test "xHAVE_VIZAUDIO" != x1; then
+		if test "x$HAVE_VIZAUDIO" != x1; then
 				AC_MSG_ERROR([*** VizAudio selected for builtin driver, but not enabled. ***])
 		fi
 		

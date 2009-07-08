@@ -417,26 +417,26 @@ AM_CONDITIONAL([HAVE_TDB], [test "x$HAVE_TDB" = x1])
 
 
 ### VizAudio support (Optional) ###
-AC_ARG_ENABLE([libvizaudio],
-    AS_HELP_STRING([--disable-libvizaudio], [Disable optional VizAudio support]),
+AC_ARG_ENABLE([vizaudio],
+    AS_HELP_STRING([--disable-vizaudio], [Disable optional VizAudio support]),
         [
             case "${enableval}" in
-                yes) libvizaudio=yes ;;
-                no) libvizaudio=no ;;
+                yes) vizaudio=yes ;;
+                no) vizaudio=no ;;
                 *) AC_MSG_ERROR(bad value ${enableval} for --disable-libvizaudio) ;;
             esac
         ],
-        [libvizaudio=auto])
+        [vizaudio=auto])
 
 if test "x${libvizaudio}" != xno ; then
-    PKG_CHECK_MODULES(libvizaudio, [ libvizaudio >= 1.0 ],
+    PKG_CHECK_MODULES(VIZAUDIO, [ libvizaudio >= 1.0 ],
         [
             HAVE_VIZAUDIO=1
             AC_DEFINE([HAVE_VIZAUDIO], 1, [Have vizaudio?])
         ],
         [
             HAVE_VIZAUDIO=0
-            if test "x$libvizaudio" = xyes ; then
+            if test "x$vizaudio" = xyes ; then
                 AC_MSG_ERROR([*** vizaudio not found ***])
             fi
         ])

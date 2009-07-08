@@ -738,7 +738,7 @@ echo "
     Builtin OSS:            ${ENABLE_BUILTIN_OSS}
     Enable GStreamer:       ${ENABLE_GSTREAMER}
     Builtin GStreamer:      ${ENABLE_BUILTIN_GSTREAMER}
-	Enable VizAudio:        ${ENABLE_VIZAUDIO}
+    Enable VizAudio:        ${ENABLE_VIZAUDIO}
     Builtin VizAudio:       ${ENABLE_BUILTIN_VIZAUDIO}
     Enable Null Output:     ${ENABLE_NULL}
     Builtin Null Output:    ${ENABLE_BUILTIN_NULL}

@@ -415,6 +415,39 @@ AC_SUBST(TDB_LIBS)
 AC_SUBST(HAVE_TDB)
 AM_CONDITIONAL([HAVE_TDB], [test "x$HAVE_TDB" = x1])
 
+
+### VizAudio support (Optional) ###
+AC_ARG_ENABLE([libvizaudio],
+    AS_HELP_STRING([--disable-libvizaudio], [Disable optional VizAudio support]),
+        [
+            case "${enableval}" in
+                yes) libvizaudio=yes ;;
+                no) libvizaudio=no ;;
+                *) AC_MSG_ERROR(bad value ${enableval} for --disable-libvizaudio) ;;
+            esac
+        ],
+        [libvizaudio=auto])
+
+if test "x${libvizaudio}" != xno ; then
+    PKG_CHECK_MODULES(libvizaudio, [ libvizaudio >= 1.0 ],
+        [
+            HAVE_VIZAUDIO=1
+            AC_DEFINE([HAVE_VIZAUDIO], 1, [Have vizaudio?])
+        ],
+        [
+            HAVE_VIZAUDIO=0
+            if test "x$libvizaudio" = xyes ; then
+                AC_MSG_ERROR([*** vizaudio not found ***])
+            fi
+        ])
+else
+    HAVE_VIZAUDIO=0
+fi
+
+AC_SUBST(VIZAUDIO_CFLAGS)
+AC_SUBST(VIZAUDIO_LIBS)
+
+
 ### Global cache support ###
 
 # For now, we only support tdb based caching, hence we'll shortcut this here
@@ -482,6 +515,20 @@ case "x$with_builtin" in
         HAVE_NULL=0
      ;;
 
+	xvizaudio)
+		if test "xHAVE_VIZAUDIO" != x1; then
+				AC_MSG_ERROR([*** VizAudio selected for builtin driver, but not enabled. ***])
+		fi
+		
+		BUILTIN_VIZAUDIO=1
+		HAVE_OSS=0
+		HAVE_PULSE=0
+		HAVE_ALSA=0
+		HAVE_GSTREAMER=0
+		HAVE_NULL=0
+		
+		;;
+	
      xalsa)
         if test "x$HAVE_ALSA" != x1 ; then
                 AC_MSG_ERROR([*** ALSA selected for builtin driver, but not enabled. ***])
@@ -492,6 +539,7 @@ case "x$with_builtin" in
         HAVE_PULSE=0
 	HAVE_GSTREAMER=0
         HAVE_NULL=0
+		HAVE_VIZAUDIO=0
      ;;
 
      xgstreamer)
@@ -504,6 +552,7 @@ case "x$with_builtin" in
 	HAVE_OSS=0
         HAVE_PULSE=0
         HAVE_NULL=0
+		HAVE_VIZAUDIO=0
      ;;
 
      xoss)
@@ -516,6 +565,7 @@ case "x$with_builtin" in
 	HAVE_PULSE=0
 	HAVE_GSTREAMER=0
 	HAVE_NULL=0
+	HAVE_VIZAUDIO=0
      ;;
 
      xnull)
@@ -528,6 +578,7 @@ case "x$with_builtin" in
         HAVE_ALSA=0
 	HAVE_OSS=0
 	HAVE_GSTREAMER=0
+	HAVE_VIZAUDIO=0
      ;;
 
      xdso)
@@ -540,7 +591,7 @@ case "x$with_builtin" in
         AC_MSG_ERROR([*** Unknown driver $with_builtin selected for builtin ***])
 esac
 
-if test "x$HAVE_PULSE" != x1 -a "x$HAVE_ALSA" != x1 -a "x$HAVE_OSS" != x1 -a "x$HAVE_GSTREAMER" != x1 -a "x$HAVE_NULL" != x1 ; then
+if test "x$HAVE_PULSE" != x1 -a "x$HAVE_ALSA" != x1 -a "x$HAVE_OSS" != x1 -a "x$HAVE_GSTREAMER" != x1 -a "x$HAVE_VIZAUDIO" != x1 -a "x$HAVE_NULL" != x1 ; then
    AC_MSG_ERROR([*** No backend enabled. ***])
 fi
 
@@ -549,17 +600,20 @@ AC_SUBST(HAVE_PULSE)
 AC_SUBST(HAVE_ALSA)
 AC_SUBST(HAVE_OSS)
 AC_SUBST(HAVE_GSTREAMER)
+AC_SUBST(HAVE_VIZAUDIO)
 AC_SUBST(HAVE_NULL)
 AC_SUBST(BUILTIN_DSO)
 AC_SUBST(BUILTIN_PULSE)
 AC_SUBST(BUILTIN_ALSA)
 AC_SUBST(BUILTIN_OSS)
 AC_SUBST(BUILTIN_GSTREAMER)
+AC_SUBST(BUILTIN_VIZAUDIO)
 AC_SUBST(BUILTIN_NULL)
 AM_CONDITIONAL([HAVE_PULSE], [test "x$HAVE_PULSE" = x1])
 AM_CONDITIONAL([HAVE_ALSA], [test "x$HAVE_ALSA" = x1])
 AM_CONDITIONAL([HAVE_OSS], [test "x$HAVE_OSS" = x1])
 AM_CONDITIONAL([HAVE_GSTREAMER], [test "x$HAVE_GSTREAMER" = x1])
+AM_CONDITIONAL([HAVE_VIZAUDIO], [test "x$HAVE_VIZAUDIO" = x1])
 AM_CONDITIONAL([HAVE_NULL], [test "x$HAVE_NULL" = x1])
 AM_CONDITIONAL([BUILTIN_DSO], [test "x$BUILTIN_DSO" = x1])
 AM_CONDITIONAL([BUILTIN_PULSE], [test "x$BUILTIN_PULSE" = x1])
@@ -640,6 +694,15 @@ if test "x$BUILTIN_NULL" = "x1" ; then
    ENABLE_BUILTIN_NULL=yes
 fi
 
+ENABLE_VIZAUDIO=no
+if test "x$HAVE_VIZAUDIO" = "x1" ; then
+    ENABLE_VIZAUDIO=yes
+fi
+ENABLE_BUILTIN_VIZAUDIO=no
+if test "x$BUILTIN_VIZAUDIO" = "x1" ; then
+    ENABLE_BUILTIN_VIZAUDIO=yes
+fi
+
 ENABLE_GTK=no
 if test "x$HAVE_GTK" = "x1" ; then
    ENABLE_GTK=yes
@@ -674,6 +737,8 @@ echo "
     Builtin OSS:            ${ENABLE_BUILTIN_OSS}
     Enable GStreamer:       ${ENABLE_GSTREAMER}
     Builtin GStreamer:      ${ENABLE_BUILTIN_GSTREAMER}
+	Enable VizAudio:        ${ENABLE_VIZAUDIO}
+    Builtin VizAudio:       ${ENABLE_BUILTIN_VIZAUDIO}
     Enable Null Output:     ${ENABLE_NULL}
     Builtin Null Output:    ${ENABLE_BUILTIN_NULL}
     Enable tdb:             ${ENABLE_TDB}

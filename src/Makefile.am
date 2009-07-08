@@ -269,6 +269,41 @@ libcanberra_null_la_LDFLAGS = \
 endif
 endif
 
+if HAVE_VIZAUDIO
+if BUILTIN_VIZAUDIO
+
+libcanberra_la_SOURCES += \
+	vizaudio.c
+libcanberra_la_CFLAGS += \
+	$(VIZAUDIO_CFLAGS)
+libcanberra_la_LIBADD += \
+	 $(VIZAUDIO_LIBS)
+
+else
+
+plugin_LTLIBRARIES += \
+	libcanberra-vizaudio.la
+
+libcanberra_vizaudio_la_SOURCES = \
+	vizaudio.c
+libcanberra_vizaudio_la_CFLAGS = \
+     $(VIZAUDIO_CFLAGS) \
+	 -Ddriver_open=vizaudio_driver_open \
+	 -Ddriver_destroy=vizaudio_driver_destroy \
+	 -Ddriver_change_device=vizaudio_driver_change_device \
+	 -Ddriver_change_props=vizaudio_driver_change_props \
+	 -Ddriver_play=vizaudio_driver_play \
+	 -Ddriver_cancel=vizaudio_driver_cancel \
+	 -Ddriver_cache=vizaudio_driver_cache
+libcanberra_vizaudio_la_LIBADD = \
+    $(VIZAUDIO_LIBS) \
+	libcanberra.la
+libcanberra_vizaudio_la_LDFLAGS = \
+	-avoid-version -module -export-dynamic
+endif
+endif
+
+
 if HAVE_GTK
 
 lib_LTLIBRARIES += \

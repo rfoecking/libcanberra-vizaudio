@@ -58,6 +58,23 @@ extern "C" {
     ((CA_MAJOR > (major)) ||                                    \
      (CA_MAJOR == (major) && CA_MINOR >= (minor)))
 
+
+/**
+ * CA_PROP_VISUAL_EFFECT
+ * 
+ * A string describing the visual effect to be displayed with this sound
+ * event. For VizAudio.
+ */
+#define CA_PROP_VISUAL_EFFECT                      "visual.effect"
+
+/**
+ * CA_PROP_MEDIA_IMAGE_FILENAME
+ *
+ * The filename corresponding to an image to be loaded and associated
+ * with the played sound.
+ */
+ #define CA_PROP_MEDIA_IMAGE_FILENAME			   "media.image.filename"
+
 /**
  * CA_PROP_MEDIA_NAME:
  *

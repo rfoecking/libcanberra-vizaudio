@@ -39,7 +39,7 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
     ca_return_val_if_fail(!userdata || cb, CA_ERROR_INVALID);
 
 	// Sorry for the goto. We skip the entire procedure if we're not enabled
-	
+
 	if(!isVAEnabled()){
 		 return CA_ERROR_DISABLED;
 	}
@@ -47,14 +47,19 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 	char* effect;
 	// Get the visual effect
     effect = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_VISUAL_EFFECT);
-	
+    // Return if its not found
+    ca_return_val_if_fail(effect, CA_ERROR_INVALID);
+
 	if(!strcmp(effect, "SONG_INFO_POPUP")){
 		// Grab additional info and goto finish if any are found
 		char* artist;
 		char* title;
 		artist = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_ARTIST);
 		title = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_TITLE);
-		
+    }
+
+		#ifdef POOP
+        printf("did this work #2 \n");
 		// Check for errors, break out if found
 		if(!artist){
 			printf("Artist not defined in property list\n");
@@ -97,6 +102,9 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
     if (cb){
         cb(c, id, CA_SUCCESS, userdata);
 	} */
+
+#endif
+
 
     return CA_SUCCESS;
 }

@@ -59,8 +59,6 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
         ca_return_val_if_fail(title, CA_ERROR_INVALID);
         ca_return_val_if_fail(artist, CA_ERROR_INVALID);
 
-        
-        printf("song_popup\n");
 
 		song_popup(artist, title);
 	}

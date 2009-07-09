@@ -16,13 +16,13 @@
 # License along with libcanberra. If not, see
 # <http://www.gnu.org/licenses/>.
 
-dist_doc_DATA = README
+#dist_doc_DATA = README
 
 EXTRA_DIST = bootstrap.sh autogen.sh LGPL libcanberra.schemas
 SUBDIRS = src gtkdoc doc
 
 MAINTAINERCLEANFILES = README
-noinst_DATA = README
+#noinst_DATA = README
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libcanberra.pc

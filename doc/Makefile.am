@@ -16,7 +16,7 @@
 # License along with libcanberra. If not, see
 # <http://www.gnu.org/licenses/>.
 
-noinst_DATA = README.html README
+#noinst_DATA = README.html README
 EXTRA_DIST = $(noinst_DATA) style.css README.html.in
 
 MAINTAINERCLEANFILES = README.html

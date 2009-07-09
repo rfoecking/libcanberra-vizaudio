@@ -58,8 +58,7 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		title = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_TITLE);
     }
 
-		#ifdef POOP
-        printf("did this work #2 \n");
+#ifdef POOP
 		// Check for errors, break out if found
 		if(!artist){
 			printf("Artist not defined in property list\n");

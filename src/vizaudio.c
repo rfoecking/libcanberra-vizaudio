@@ -38,8 +38,6 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
     ca_return_val_if_fail(proplist, CA_ERROR_INVALID);
     ca_return_val_if_fail(!userdata || cb, CA_ERROR_INVALID);
 
-	// Sorry for the goto. We skip the entire procedure if we're not enabled
-
 	if(!isVAEnabled()){
 		 return CA_ERROR_DISABLED;
 	}
@@ -60,6 +58,10 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
     
         ca_return_val_if_fail(title, CA_ERROR_INVALID);
         ca_return_val_if_fail(artist, CA_ERROR_INVALID);
+
+        
+        printf("song_popup\n");
+
 		song_popup(artist, title);
 	}
 	else if (!strcmp(effect, "COLOR_ALERT")){

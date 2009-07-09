@@ -54,20 +54,13 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		// Grab additional info and goto finish if any are found
 		char* artist;
 		char* title;
+
 		artist = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_ARTIST);
 		title = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_TITLE);
-    }
+    
+        ca_return_val_if_fail(title, CA_ERROR_INVALID);
+        ca_return_val_if_fail(artist, CA_ERROR_INVALID);
 
-		#ifdef POOP
-        printf("did this work #2 \n");
-		// Check for errors, break out if found
-		if(!artist){
-			printf("Artist not defined in property list\n");
-			return CA_ERROR_NOTFOUND;
-		}else if(!title){
-			printf("Title not defined in property list\n");
-			return CA_ERROR_NOTFOUND;
-		}
 		song_popup(artist, title);
 	}
 	else if (!strcmp(effect, "COLOR_ALERT")){
@@ -79,29 +72,25 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		
 		// Determine if the file actually exists
 		FILE* file = fopen(filename, "r");
-		if(!file){
-			fclose(file);
-		}else{
-			printf("CA_PROP_MEDIA_IMAGE_FILENAME is invalid.\n");
-			return CA_ERROR_NOTFOUND;
-		}
+        ca_return_val_if_fail(file, CA_ERROR_NOTFOUND);
+
 		flash_image(filename);
+
+        fclose(file);
 	}
 	else if(!strcmp(effect, "FLYING_DESCRIPTION_TEXT_ALERT")){
 		char* text = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_EVENT_DESCRIPTION);
 		
 		// Check for errors
-		if(!text){
-			printf("CA_PROP_EVENT_DESCRIPTION is not defined.\n");
-		}else{
-			flash_text(text);
-		}
+        ca_return_val_if_fail(text, CA_ERROR_INVALID);
+
+		flash_text(text);
 	}
 
     // Where should this callback thing happen, if at all?
     if (cb)
         cb(c, id, CA_SUCCESS, userdata);
-#endif
+
 
     return CA_SUCCESS;
 }

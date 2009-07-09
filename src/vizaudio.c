@@ -54,8 +54,10 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		// Grab additional info and goto finish if any are found
 		char* artist;
 		char* title;
+
 		artist = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_ARTIST);
 		title = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_TITLE);
+<<<<<<< HEAD:src/vizaudio.c
     }
 
 #ifdef POOP
@@ -67,6 +69,12 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 			printf("Title not defined in property list\n");
 			return CA_ERROR_NOTFOUND;
 		}
+=======
+    
+        ca_return_val_if_fail(title, CA_ERROR_INVALID);
+        ca_return_val_if_fail(artist, CA_ERROR_INVALID);
+
+>>>>>>> 14bbbc73108468ca9a3c1474895fa5b75f9323eb:src/vizaudio.c
 		song_popup(artist, title);
 	}
 	else if (!strcmp(effect, "COLOR_ALERT")){
@@ -78,31 +86,29 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		
 		// Determine if the file actually exists
 		FILE* file = fopen(filename, "r");
-		if(!file){
-			fclose(file);
-		}else{
-			printf("CA_PROP_MEDIA_IMAGE_FILENAME is invalid.\n");
-			return CA_ERROR_NOTFOUND;
-		}
+        ca_return_val_if_fail(file, CA_ERROR_NOTFOUND);
+
 		flash_image(filename);
+
+        fclose(file);
 	}
 	else if(!strcmp(effect, "FLYING_DESCRIPTION_TEXT_ALERT")){
 		char* text = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_EVENT_DESCRIPTION);
 		
 		// Check for errors
-		if(!text){
-			printf("CA_PROP_EVENT_DESCRIPTION is not defined.\n");
-		}else{
-			flash_text(text);
-		}
+        ca_return_val_if_fail(text, CA_ERROR_INVALID);
+
+		flash_text(text);
 	}
 
     /*
     if (cb){
         cb(c, id, CA_SUCCESS, userdata);
+<<<<<<< HEAD:src/vizaudio.c
 	} */
 
 #endif
+>>>>>>> 14bbbc73108468ca9a3c1474895fa5b75f9323eb:src/vizaudio.c
 
 
     return CA_SUCCESS;

@@ -93,9 +93,10 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		}
 	}
 
-    // Where should this callback thing happen, if at all?
-    if (cb)
+    /*
+    if (cb){
         cb(c, id, CA_SUCCESS, userdata);
+	} */
 
     return CA_SUCCESS;
 }

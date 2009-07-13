@@ -63,7 +63,12 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		//song_popup(artist, title);
 	}
 	else if (!strcmp(effect, "COLOR_ALERT")){
-		flash_color();
+        char* color;
+        color = (char*)ca_proplist_gets_unlocked(proplist, CA_PROP_COLOR);
+        
+        ca_return_val_if_fail(color, CA_ERROR_INVALID);
+        
+		flash_color(color);
 		return CA_SUCCESS;
 	}
 	else if (!strcmp(effect, "IMAGE_ALERT")){

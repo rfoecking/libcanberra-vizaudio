@@ -68,6 +68,14 @@ extern "C" {
 #define CA_PROP_VISUAL_EFFECT                      "visual.effect"
 
 /**
+ * CA_PROP_COLOR
+ *
+ * A string describing a color to be flashed by the color alert visual
+ * effect. This string must be an acceptable color for gdk_color_parse.
+ */
+#define CA_PROP_COLOR                              "color"
+
+/**
  * CA_PROP_MEDIA_IMAGE_PATH
  *
  * The filename corresponding to an image to be loaded and associated

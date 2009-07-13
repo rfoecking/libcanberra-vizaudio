@@ -38,8 +38,6 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
     ca_return_val_if_fail(proplist, CA_ERROR_INVALID);
     ca_return_val_if_fail(!userdata || cb, CA_ERROR_INVALID);
 
-	// Sorry for the goto. We skip the entire procedure if we're not enabled
-	
 	if(!isVAEnabled()){
 		 return CA_ERROR_DISABLED;
 	}
@@ -47,55 +45,59 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 	char* effect;
 	// Get the visual effect
     effect = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_VISUAL_EFFECT);
-	
+    // Return if its not found
+    ca_return_val_if_fail(effect, CA_ERROR_INVALID);
+
 	if(!strcmp(effect, "SONG_INFO_POPUP")){
 		// Grab additional info and goto finish if any are found
 		char* artist;
 		char* title;
+
 		artist = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_ARTIST);
 		title = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_TITLE);
-		
-		// Check for errors, break out if found
-		if(!artist){
-			printf("Artist not defined in property list\n");
-			return CA_ERROR_NOTFOUND;
-		}else if(!title){
-			printf("Title not defined in property list\n");
-			return CA_ERROR_NOTFOUND;
-		}
-		song_popup(artist, title);
+    
+        ca_return_val_if_fail(title, CA_ERROR_INVALID);
+        ca_return_val_if_fail(artist, CA_ERROR_INVALID);
+
+		// TODO: Make sure this isn't causing GTK errors
+		//song_popup(artist, title);
 	}
 	else if (!strcmp(effect, "COLOR_ALERT")){
-		flash_color();
+        char* color;
+        color = (char*)ca_proplist_gets_unlocked(proplist, CA_PROP_COLOR);
+        
+        ca_return_val_if_fail(color, CA_ERROR_INVALID);
+        
+		flash_color(color);
 		return CA_SUCCESS;
 	}
 	else if (!strcmp(effect, "IMAGE_ALERT")){
-		char* filename = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_IMAGE_FILENAME);
+		char* filePath = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_IMAGE_PATH);
 		
 		// Determine if the file actually exists
-		FILE* file = fopen(filename, "r");
-		if(!file){
-			fclose(file);
-		}else{
-			printf("CA_PROP_MEDIA_IMAGE_FILENAME is invalid.\n");
-			return CA_ERROR_NOTFOUND;
-		}
-		flash_image(filename);
+		FILE* file = fopen(filePath, "r");
+        ca_return_val_if_fail(file, CA_ERROR_NOTFOUND);
+
+		flash_image(filePath);
+
+        fclose(file);
 	}
 	else if(!strcmp(effect, "FLYING_DESCRIPTION_TEXT_ALERT")){
 		char* text = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_EVENT_DESCRIPTION);
 		
 		// Check for errors
-		if(!text){
-			printf("CA_PROP_EVENT_DESCRIPTION is not defined.\n");
-		}else{
-			flash_text(text);
-		}
+        ca_return_val_if_fail(text, CA_ERROR_INVALID);
+
+		flash_text(text);
 	}
 
-    // Where should this callback thing happen, if at all?
-    if (cb)
+    
+    if (cb){
         cb(c, id, CA_SUCCESS, userdata);
+	}
+
+
+
 
     return CA_SUCCESS;
 }

@@ -59,21 +59,21 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
         ca_return_val_if_fail(title, CA_ERROR_INVALID);
         ca_return_val_if_fail(artist, CA_ERROR_INVALID);
 
-
-		song_popup(artist, title);
+		// TODO: Make sure this isn't causing GTK errors
+		//song_popup(artist, title);
 	}
 	else if (!strcmp(effect, "COLOR_ALERT")){
 		flash_color();
 		return CA_SUCCESS;
 	}
 	else if (!strcmp(effect, "IMAGE_ALERT")){
-		char* filename = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_IMAGE_FILENAME);
+		char* filePath = (char*) ca_proplist_gets_unlocked(proplist, CA_PROP_MEDIA_IMAGE_PATH);
 		
 		// Determine if the file actually exists
-		FILE* file = fopen(filename, "r");
+		FILE* file = fopen(filePath, "r");
         ca_return_val_if_fail(file, CA_ERROR_NOTFOUND);
 
-		flash_image(filename);
+		flash_image(filePath);
 
         fclose(file);
 	}
@@ -86,10 +86,10 @@ int driver_play(ca_context *c, uint32_t id, ca_proplist *proplist, ca_finish_cal
 		flash_text(text);
 	}
 
-    /*
+    
     if (cb){
         cb(c, id, CA_SUCCESS, userdata);
-	} */
+	}
 
 
 

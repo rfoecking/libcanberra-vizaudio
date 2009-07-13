@@ -68,12 +68,12 @@ extern "C" {
 #define CA_PROP_VISUAL_EFFECT                      "visual.effect"
 
 /**
- * CA_PROP_MEDIA_IMAGE_FILENAME
+ * CA_PROP_MEDIA_IMAGE_PATH
  *
  * The filename corresponding to an image to be loaded and associated
  * with the played sound.
  */
- #define CA_PROP_MEDIA_IMAGE_FILENAME			   "media.image.filename"
+ #define CA_PROP_MEDIA_IMAGE_PATH			   "media.image.path"
 
 /**
  * CA_PROP_MEDIA_NAME:

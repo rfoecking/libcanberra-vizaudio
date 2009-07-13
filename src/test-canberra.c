@@ -64,6 +64,8 @@ int main(int argc, char *argv[]) {
                           CA_PROP_MEDIA_NAME, "User has logged off from session",
                           CA_PROP_MEDIA_LANGUAGE, "en_EN",
                           CA_PROP_CANBERRA_CACHE_CONTROL, "permanent",
+                          CA_PROP_EVENT_DESCRIPTION, "This is a description",
+						  CA_PROP_VISUAL_EFFECT, "FLYING_DESCRIPTION_TEXT_ALERT",
                           NULL);
     fprintf(stderr, "play: %s\n", ca_strerror(ret));
 

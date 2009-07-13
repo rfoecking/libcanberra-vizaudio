@@ -28,6 +28,9 @@
 #include "driver-order.h"
 
 const char* const ca_driver_order[] = {
+#ifdef HAVE_VIZAUDIO
+    "vizaudio",
+#endif
 #ifdef HAVE_PULSE
     "pulse",
 #endif

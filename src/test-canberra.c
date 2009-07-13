@@ -60,18 +60,24 @@ int main(int argc, char *argv[]) {
     /* Now trigger a sound event, the quick version */
     ret = ca_context_play(c, 0,
                           CA_PROP_EVENT_ID, "desktop-login",
-                          CA_PROP_MEDIA_FILENAME, "/usr/share/sounds/bar.wav",
+                          CA_PROP_MEDIA_FILENAME, "/usr/share/sounds/ubuntu/stereo/bell.ogg",
                           CA_PROP_MEDIA_NAME, "User has logged off from session",
                           CA_PROP_MEDIA_LANGUAGE, "en_EN",
                           CA_PROP_CANBERRA_CACHE_CONTROL, "permanent",
+                          CA_PROP_VISUAL_EFFECT, "COLOR_ALERT",
+                          CA_PROP_COLOR, "blue",
+                           CA_PROP_MEDIA_ARTIST, "artist band group",
+                          CA_PROP_MEDIA_TITLE, "a cool song",
                           NULL);
     fprintf(stderr, "play: %s\n", ca_strerror(ret));
 
     /* Now trigger a sound event, the complex version */
     ca_proplist_create(&p);
     ca_proplist_sets(p, CA_PROP_EVENT_ID, "desktop-logout");
-    ca_proplist_sets(p, CA_PROP_MEDIA_FILENAME, "/usr/share/sounds/uxknkurz.wav");
+    ca_proplist_sets(p, CA_PROP_MEDIA_FILENAME, "/usr/share/sounds/ubuntu/stereo/bell.ogg");
     ca_proplist_sets(p, CA_PROP_MEDIA_NAME, "New email received");
+    ca_proplist_sets(p, CA_PROP_VISUAL_EFFECT, "COLOR_ALERT");
+    ca_proplist_sets(p, CA_PROP_COLOR, "blue");
     ca_proplist_setf(p, "test.foo", "%u", 4711);
     ret = ca_context_play_full(c, 1, p, callback, (void*) 0x4711);
     ca_proplist_destroy(p);
@@ -79,9 +85,11 @@ int main(int argc, char *argv[]) {
 
     /* Now trigger a sound event, by filename */
     ret = ca_context_play(c, 2,
-                          CA_PROP_MEDIA_FILENAME, "/usr/share/sounds/freedesktop/stereo/audio-channel-front-left.ogg",
+                          CA_PROP_MEDIA_FILENAME, "/usr/share/sounds/ubuntu/stereo/bell.ogg",
                           CA_PROP_MEDIA_NAME, "Front Left",
                           CA_PROP_MEDIA_LANGUAGE, "en_EN",
+                          CA_PROP_VISUAL_EFFECT, "COLOR_ALERT",
+                          CA_PROP_COLOR, "blue",
                           NULL);
     fprintf(stderr, "play (by filename): %s\n", ca_strerror(ret));
 

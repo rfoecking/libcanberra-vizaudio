@@ -423,12 +423,12 @@ AC_ARG_ENABLE([vizaudio],
             case "${enableval}" in
                 yes) vizaudio=yes ;;
                 no) vizaudio=no ;;
-                *) AC_MSG_ERROR(bad value ${enableval} for --disable-libvizaudio) ;;
+                *) AC_MSG_ERROR(bad value ${enableval} for --disable-vizaudio) ;;
             esac
         ],
         [vizaudio=auto])
 
-if test "x${libvizaudio}" != xno ; then
+if test "x${vizaudio}" != xno ; then
     PKG_CHECK_MODULES(VIZAUDIO, [ libvizaudio >= 1.0 ],
         [
             HAVE_VIZAUDIO=1
